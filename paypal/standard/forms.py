@@ -69,10 +69,11 @@ class PayPalDateTimeField(forms.DateTimeField):
                 code="invalid_date"
             )
 
-        if zone_part in ["PDT", "PST"]:
-            # PST/PDT is 'US/Pacific'
-            dt = timezone.pytz.timezone('US/Pacific').localize(
-                dt, is_dst=zone_part == 'PDT')
+        if timezone.pytz and settings.USE_TZ:
+            if zone_part in ["PDT", "PST"]:
+                # PST/PDT is 'US/Pacific'
+                dt = timezone.pytz.timezone('US/Pacific').localize(
+                    dt, is_dst=zone_part == 'PDT')
         return dt
 
 
